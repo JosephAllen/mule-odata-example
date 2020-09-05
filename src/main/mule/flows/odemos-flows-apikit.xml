@@ -1,40 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+<mule
+    xmlns="http://www.mulesoft.org/schema/mule/core"
     xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
     xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
                         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+    <flow name="delete:\ODemos\(Id):api-config">
+        <flow-ref doc:name="odemos-delete-id-flow" doc:id="207d8cc7-8cc0-4f3f-941d-deff41f612da" name="odemos-delete-id-flow"/>
+    </flow>
     <flow name="get:\ODemos:api-config">
         <flow-ref doc:name="odemos-get-flow" doc:id="be212818-853c-4e52-8cba-9e267ff51e37" name="odemos-get-flow"/>
     </flow>
+    <flow name="get:\ODemos\(Id):api-config">
+        <flow-ref doc:name="odemos-get-id-flow" doc:id="5229d805-f057-4911-bb90-3ffabf7916e0" name="odemos-get-id-flow"/>
+    </flow>
     <flow name="post:\ODemos:application\json:api-config">
-        <logger level="INFO" message="post:\ODemo:application\json:api-config" />
+        <flow-ref doc:name="odemos-post-id-flow" doc:id="d639c592-dba5-4adc-85e8-e1f93f3001c1" name="odemos-post-id-flow"/>
     </flow>
     <flow name="put:\ODemos\(Id):application\json:api-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="Id">attributes.uriParams.Id
-                </ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <logger level="INFO" message="put:\ODemo\(Id):application\json:api-config" />
-    </flow>
-    <flow name="delete:\ODemos\(Id):api-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="Id">attributes.uriParams.Id
-                </ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <logger level="INFO" message="delete:\ODemo\(Id):api-config" />
-    </flow>
-    <flow name="get:\ODemos\(Id):api-config">
-        <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
-            <ee:variables>
-                <ee:set-variable variableName="Id">attributes.uriParams.Id
-                </ee:set-variable>
-            </ee:variables>
-        </ee:transform>
-        <logger level="INFO" message="get:\ODemo\(Id):api-config" />
+        <flow-ref doc:name="odemos-put-id-flow" doc:id="52a7d608-262b-484d-8147-b7796d820fe9" name="odemos-put-id-flow"/>
     </flow>
 </mule>
