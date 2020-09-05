@@ -4,37 +4,37 @@
     xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
                         http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
-    <flow name="get:\OTests:api-config">
-        <logger level="INFO" message="get:\OTests:api-config" />
+    <flow name="get:\ODemos:api-config">
+        <logger level="INFO" message="get:\ODemo:api-config" />
     </flow>
-    <flow name="post:\OTests:application\json:api-config">
-        <logger level="INFO" message="post:\OTests:application\json:api-config" />
+    <flow name="post:\ODemos:application\json:api-config">
+        <logger level="INFO" message="post:\ODemo:application\json:api-config" />
     </flow>
-    <flow name="put:\OTests\(Id):application\json:api-config">
+    <flow name="put:\ODemos\(Id):application\json:api-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
             <ee:variables>
                 <ee:set-variable variableName="Id">attributes.uriParams.Id
                 </ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <logger level="INFO" message="put:\OTests\(Id):application\json:api-config" />
+        <logger level="INFO" message="put:\ODemo\(Id):application\json:api-config" />
     </flow>
-    <flow name="delete:\OTests\(Id):api-config">
+    <flow name="delete:\ODemos\(Id):api-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
             <ee:variables>
                 <ee:set-variable variableName="Id">attributes.uriParams.Id
                 </ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <logger level="INFO" message="delete:\OTests\(Id):api-config" />
+        <logger level="INFO" message="delete:\ODemo\(Id):api-config" />
     </flow>
-    <flow name="get:\OTests\(Id):api-config">
+    <flow name="get:\ODemos\(Id):api-config">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core">
             <ee:variables>
                 <ee:set-variable variableName="Id">attributes.uriParams.Id
                 </ee:set-variable>
             </ee:variables>
         </ee:transform>
-        <logger level="INFO" message="get:\OTests\(Id):api-config" />
+        <logger level="INFO" message="get:\ODemo\(Id):api-config" />
     </flow>
 </mule>

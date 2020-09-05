@@ -1,5 +1,5 @@
 #%RAML 1.0
-title: Auto-generated RAML
+title: OData Example API
 version: 0.1
 mediaType:  application/json
 
@@ -54,9 +54,9 @@ resourceTypes:
             application/json:
               type: <<model>>
 
-/OTests:
-  displayName: OTests
-  type: { collection: { model: model.OTest } }
+/ODemos:
+  displayName: ODemos
+  type: { collection: { model: model.ODemo } }
   /{Id}:
-    displayName: OTest
-    type: { member: { model: model.OTest } }
+    displayName: ODemo
+    type: { member: { model: model.ODemo } }
