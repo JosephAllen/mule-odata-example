@@ -1,0 +1,21 @@
+#%RAML 1.0 Library
+uses:
+  odata: /libraries/odataLibrary.raml
+
+types:
+  OTest:
+    description: Example Table Exposed by OData
+    (odata.remote): OTest
+    properties:
+      Id:
+        format: int32
+        description: Primary key for OTest
+        required: false
+        type: number
+        (odata.key): true
+        (odata.nullable): false
+      Name:
+        type: string
+        description: Name of OTest Record
+        (odata.nullable): false
+        (odata.key): true
