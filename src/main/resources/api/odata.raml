@@ -1,6 +1,6 @@
 #%RAML 1.0 Library
 uses:
-  odata: /libraries/odataLibrary.raml
+  odata: libraries/odataLibrary.raml
 
 types:
   ODemo:
@@ -9,13 +9,13 @@ types:
     properties:
       Id:
         format: int32
-        description: Primary key for OTest
+        description: Primary key for ODemo
         required: false
         type: number
         (odata.key): true
         (odata.nullable): false
       Name:
         type: string
-        description: Name of OTest Record
+        description: Name of ODemo Record
         (odata.key): false
         (odata.nullable): false
