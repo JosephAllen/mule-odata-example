@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule
+    xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+    xmlns="http://www.mulesoft.org/schema/mule/core"
+    xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    <sub-flow name="odemos-get-flow" doc:id="6d2bc5a7-b52d-4b5f-a71f-68793e849cc8" >
+        <logger level="INFO" doc:name="Logger" doc:id="bf3ee7f6-f622-4f37-a98d-ae4a9a45584f" message="odemos-get-flow-called"/>
+        <ee:transform doc:name="Build Query" doc:id="1ea04610-9676-4509-86bf-ea3b8be1a0dc" >
+            <ee:message >
+                <ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+"Some SQL"]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger level="DEBUG" doc:name="DEBUG SQL" doc:id="771b78ea-226d-4f68-9779-f5561071958e" message="#[payload]"/>
+        <logger level="INFO" doc:name="Db Thing Here" doc:id="e3098993-d535-40c6-9805-f2230dbe5806" />
+        <ee:transform doc:name="Build Response" doc:id="d8f69f11-77dc-425d-8ca4-2180acd55411" >
+            <ee:message >
+                <ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger level="DEBUG" doc:name="Logger" doc:id="988e098f-d1bf-4bc2-91b4-af569a63dfb8" message="#[payload]"/>
+    </sub-flow>
+</mule>
