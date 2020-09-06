@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule
+    xmlns:db="http://www.mulesoft.org/schema/mule/db"
     xmlns="http://www.mulesoft.org/schema/mule/core"
     xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
     xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+    xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
                         http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <sub-flow
         name="odemos-delete-id-flow"
@@ -14,6 +16,60 @@
             doc:name="Logger"
             doc:id="af07528a-8ccb-497c-8c66-29eda800755b"
             message="odemos-delete-id-flow Called" />
+        <flow-ref
+            doc:name="odemos-odata-init"
+            doc:id="f60d27f1-2359-4b94-8374-d705a73abe2c"
+            name="odemos-odata-init"
+            targetValue="#[vars.odata]" />
+        <ee:transform
+            doc:name="Build Query"
+            doc:id="d354df9b-9dbb-44a8-a16a-2234f263ee36">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger
+            level="DEBUG"
+            doc:name="Logger"
+            doc:id="b8d77faa-4e7c-4603-b7ff-6983ba0ba7c7"
+            message="#[payload]" />
+        <ee:transform
+            doc:name="DB DELETE GOES HERE"
+            doc:id="243127c2-6df0-4df7-a8ee-9c1ed3130a7c">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+{
+}]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <choice
+            doc:name="Affected entries == 0?"
+            doc:id="724f0f34-8a4e-4d83-989a-e7ca2a4e8c03">
+            <when expression="#[payload == 0]">
+                <set-variable
+                    value="404"
+                    doc:name="Set HTTP Satus"
+                    doc:id="52dbf471-b6bd-4efd-9b61-d179c8db2180"
+                    variableName="httpStatus" />
+                <set-payload
+                    value='{ "message": "Resource not found" }'
+                    doc:name="Set Payload"
+                    doc:id="a090a1ce-ade2-4ebf-93ca-c8771219cfbd"
+                    mimeType="application/json" />
+            </when>
+            <otherwise>
+                <set-payload
+                    value="#[null]"
+                    doc:name="Set Payload"
+                    doc:id="f5f86855-ee42-4363-bed6-9bbb1fe67c3a" />
+            </otherwise>
+        </choice>
     </sub-flow>
     <sub-flow
         name="odemos-get-flow"
@@ -23,48 +79,106 @@
             doc:name="Logger"
             doc:id="bf3ee7f6-f622-4f37-a98d-ae4a9a45584f"
             message="odemos-get-flow-called" />
+        <flow-ref doc:name="odemos-odata-init" doc:id="47e8e46e-30a8-4d40-a10f-f2871f662257" name="odemos-odata-init" targetValue="#[vars.odata]"/>
+        <flow-ref doc:name="inline-count-flow" doc:id="1612318f-5faa-4c65-a5e7-a8639505fbb3" name="inline-count-flow" targetValue="#[payload[0][0] as String]"/>
         <ee:transform
             doc:name="Build Query"
             doc:id="1ea04610-9676-4509-86bf-ea3b8be1a0dc">
             <ee:message>
-                <ee:set-payload><![CDATA[%dw 2.0
-output application/java
----
-"Some SQL"]]></ee:set-payload>
+                <ee:set-payload resource="dw/SelectRecord.dwl"/>
             </ee:message>
         </ee:transform>
         <logger
             level="DEBUG"
-            doc:name="DEBUG SQL"
+            doc:name="Log Query"
             doc:id="771b78ea-226d-4f68-9779-f5561071958e"
             message="#[payload]" />
         <logger
             level="INFO"
-            doc:name="Db Thing Here"
+            doc:name="DB Select Here"
             doc:id="e3098993-d535-40c6-9805-f2230dbe5806" />
+        <choice doc:name="Check Response" doc:id="d1884a55-1926-431f-8dec-9244d23a247f">
+            <when expression="#[sizeOf(payload) == 0]">
+                <set-variable value="404" doc:name="Set HTTP Status" doc:id="479c3c0c-b509-40f7-b102-c756d8508df2" variableName="httpStatus" />
+                <set-payload value='{ "message": "Resource not found" }' doc:name="Set Payload" doc:id="07cf8cf6-d43a-4982-ac14-bc1bd90feedd" mimeType="application/json" />
+            </when>
+            <otherwise>
+                <ee:transform doc:name="Build Response" doc:id="6427d15c-31a6-446e-b275-6f3c2d2fdc30">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+    entries: payload
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </otherwise>
+        </choice>
+    </sub-flow>
+    <sub-flow
+        name="odemos-get-id-flow"
+        doc:id="31787665-eb66-4970-8df8-64a1697dafdc">
+        <logger
+            level="INFO"
+            doc:name="Logger"
+            doc:id="2df2e74f-e97e-4918-ab4b-434594d36b57"
+            message="odemos-get-id-flow Called" />
         <ee:transform
-            doc:name="Build Response"
-            doc:id="d8f69f11-77dc-425d-8ca4-2180acd55411">
+            doc:name="Build Query"
+            doc:id="810b16d9-6e3a-46fb-9daf-99670c9ea31b">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/java
 ---
-payload]]></ee:set-payload>
+{
+}]]></ee:set-payload>
             </ee:message>
         </ee:transform>
+    </sub-flow>
+    <sub-flow
+        name="odemos-post-id-flow"
+        doc:id="1e2eb06b-ff3e-4c3d-8b45-c6b9606f9bbb">
         <logger
-            level="DEBUG"
+            level="INFO"
             doc:name="Logger"
-            doc:id="988e098f-d1bf-4bc2-91b4-af569a63dfb8"
-            message="#[payload]" />
+            doc:id="9639bba5-f8a8-447e-9fe1-6581aab4bda2"
+            message="odemos-post-id-flow Called" />
     </sub-flow>
-    <sub-flow name="odemos-get-id-flow" doc:id="31787665-eb66-4970-8df8-64a1697dafdc" >
-        <logger level="INFO" doc:name="Logger" doc:id="2df2e74f-e97e-4918-ab4b-434594d36b57" message="odemos-get-id-flow Called"/>
+    <sub-flow
+        name="odemos-put-id-flow"
+        doc:id="e7416b1d-29de-4217-966c-018491dbb278">
+        <logger
+            level="INFO"
+            doc:name="Logger"
+            doc:id="dd0e5c5e-5736-4a89-83a9-30ab80b6e303"
+            message="odemos-put-id-flow Called" />
     </sub-flow>
-    <sub-flow name="odemos-post-id-flow" doc:id="1e2eb06b-ff3e-4c3d-8b45-c6b9606f9bbb" >
-        <logger level="INFO" doc:name="Logger" doc:id="9639bba5-f8a8-447e-9fe1-6581aab4bda2" message="odemos-post-id-flow Called"/>
+    <sub-flow
+        name="odemos-odata-init"
+        doc:id="3f6c07df-1862-4799-bc8e-655e73136455">
+        <ee:transform
+            doc:name="Init odemos"
+            doc:id="7f3d5c87-992d-4cf8-9922-a4d073eb07bf">
+            <ee:message />
+
+            <ee:variables>
+                <ee:set-variable variableName="odata"><![CDATA[%dw 2.0
+output application/java
+---
+
+// vars.odata is populated inside APIKIT router automatically 
+// when calling the services with /odata.svc
+// If not present on the endpoint, then the variable needs to be manually 
+// specified.
+
+if(vars.odata == null) 
+({  "fields": ["Id","Name"],
+    "keyNames": "Id",
+    "remoteEntityName": "ODemo"
+}) else vars.odata]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
     </sub-flow>
-    <sub-flow name="odemos-put-id-flow" doc:id="e7416b1d-29de-4217-966c-018491dbb278" >
-        <logger level="INFO" doc:name="Logger" doc:id="dd0e5c5e-5736-4a89-83a9-30ab80b6e303" message="odemos-put-id-flow Called"/>
-    </sub-flow>
+
 </mule>
