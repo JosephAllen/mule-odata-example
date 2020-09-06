@@ -27,7 +27,7 @@ if(vars.odata == null)
             </ee:variables>
         </ee:transform>
     </sub-flow>
-    <sub-flow name="odemos-delete-id-flow" doc:id="f6670867-f949-4fea-a044-99bbb5a620ec">
+    <sub-flow name="contacts-delete-id-flow" doc:id="f6670867-f949-4fea-a044-99bbb5a620ec">
         <logger level="INFO" doc:name="Logger" doc:id="af07528a-8ccb-497c-8c66-29eda800755b" message="odemos-delete-id-flow Called" />
         <flow-ref doc:name="contacts-odata-init" doc:id="f60d27f1-2359-4b94-8374-d705a73abe2c" name="contacts-odata-init" targetValue="#[vars.odata]" />
         <ee:transform doc:name="Build Query" doc:id="d354df9b-9dbb-44a8-a16a-2234f263ee36">
@@ -59,7 +59,7 @@ output application/java
             </otherwise>
         </choice>
     </sub-flow>
-    <sub-flow name="odemos-get-flow" doc:id="6d2bc5a7-b52d-4b5f-a71f-68793e849cc8">
+    <sub-flow name="contacts-get-flow" doc:id="6d2bc5a7-b52d-4b5f-a71f-68793e849cc8">
         <logger level="INFO" doc:name="Logger" doc:id="bf3ee7f6-f622-4f37-a98d-ae4a9a45584f" message="odemos-get-flow-called" />
         <flow-ref doc:name="contacts-odata-init" doc:id="47e8e46e-30a8-4d40-a10f-f2871f662257" name="contacts-odata-init" targetValue="#[vars.odata]" />
         <flow-ref doc:name="inline-count-flow" doc:id="1612318f-5faa-4c65-a5e7-a8639505fbb3" name="inline-count-flow" targetValue="#[payload[0][0] as String]" />
@@ -89,7 +89,7 @@ output application/json
             </otherwise>
         </choice>
     </sub-flow>
-    <sub-flow name="odemos-get-id-flow" doc:id="31787665-eb66-4970-8df8-64a1697dafdc">
+    <sub-flow name="contacts-get-id-flow" doc:id="31787665-eb66-4970-8df8-64a1697dafdc">
         <logger level="INFO" doc:name="Logger" doc:id="2df2e74f-e97e-4918-ab4b-434594d36b57" message="odemos-get-id-flow Called" />
         <flow-ref doc:name="contacts-odata-init" doc:id="68829e3c-12c4-469d-b5ea-c819bce9ee98" name="contacts-odata-init" targetValue="#[vars.odata]" />
         <ee:transform doc:name="Build Query" doc:id="810b16d9-6e3a-46fb-9daf-99670c9ea31b">
@@ -122,7 +122,7 @@ output application/json
             </otherwise>
         </choice>
     </sub-flow>
-    <sub-flow name="odemos-post-id-flow" doc:id="1e2eb06b-ff3e-4c3d-8b45-c6b9606f9bbb">
+    <sub-flow name="contacts-post-id-flow" doc:id="1e2eb06b-ff3e-4c3d-8b45-c6b9606f9bbb">
         <logger level="INFO" doc:name="Logger" doc:id="9639bba5-f8a8-447e-9fe1-6581aab4bda2" message="odemos-post-id-flow Called" />
         <flow-ref doc:name="contacts-odata-init" doc:id="8aa67e5e-880e-4f89-bc69-c90fb2c7740b" name="contacts-odata-init" />
         <set-variable value="payload.Id" doc:name="Set Id" doc:id="9a365801-a3d4-4b6d-a713-3f062d01fd7a" variableName="id" />
@@ -150,7 +150,7 @@ output application/json
             </ee:message>
         </ee:transform>
     </sub-flow>
-    <sub-flow name="odemos-put-id-flow" doc:id="e7416b1d-29de-4217-966c-018491dbb278">
+    <sub-flow name="contacts-put-id-flow" doc:id="e7416b1d-29de-4217-966c-018491dbb278">
         <logger level="INFO" doc:name="Logger" doc:id="dd0e5c5e-5736-4a89-83a9-30ab80b6e303" message="odemos-put-id-flow Called" />
         <flow-ref doc:name="contacts-odata-init" doc:id="9ca81a31-b09d-4f84-8f0b-c99bebeb5b13" name="contacts-odata-init" targetValue="#[vars.odata]" />
         <set-variable value="payload.Id" doc:name="Set Id" doc:id="73f08520-01b5-4fd5-bc25-de73eec149ea" variableName="id" />

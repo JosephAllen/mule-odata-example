@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule
-    xmlns:db="http://www.mulesoft.org/schema/mule/db"
     xmlns="http://www.mulesoft.org/schema/mule/core"
     xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+    xmlns:db="http://www.mulesoft.org/schema/mule/db"
     xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
     xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
     xmlns:http="http://www.mulesoft.org/schema/mule/http"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-                        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
-                        http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
-                        http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+    xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd                         http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd                         http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd                          http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
     <apikit:config
         name="api-config"
         api="api.raml"
@@ -58,7 +55,7 @@
             doc:id="7c0f68a4-c3dd-45c2-86c3-5c3b89d27d83">
             <when
                 doc:id="d41fc293-dafb-4666-a266-bcf4963e8090"
-                expression='#[attributes.queryParams != null and attributes.queryParams.inlinecount == "allpages"]'>
+                expression="#[attributes.queryParams != null and attributes.queryParams.inlinecount == &quot;allpages&quot;]">
                 <ee:transform
                     doc:name="Transform Message"
                     doc:id="35876919-c370-4269-919d-32410178180f">
@@ -76,9 +73,7 @@ var remoteEntityName = vars.odata.remoteEntityName match {
 
 ---
 
-"SELECT count(*) FROM $remoteEntityName"
- 
-]]></ee:set-payload>
+"SELECT count(*) FROM $remoteEntityName"]]></ee:set-payload>
                     </ee:message>
                 </ee:transform>
                 <logger
@@ -88,11 +83,9 @@ var remoteEntityName = vars.odata.remoteEntityName match {
             </when>
         </choice>
     </sub-flow>
-
     <error-handler name="api-error-handler">
         <on-error-propagate type="APIKIT:BAD_REQUEST">
             <ee:transform
-                xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
                 xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                 <ee:message>
                     <ee:set-payload><![CDATA[%dw 2.0
@@ -108,7 +101,6 @@ output application/json
         </on-error-propagate>
         <on-error-propagate type="APIKIT:NOT_FOUND">
             <ee:transform
-                xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
                 xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                 <ee:message>
                     <ee:set-payload><![CDATA[%dw 2.0
@@ -124,7 +116,6 @@ output application/json
         </on-error-propagate>
         <on-error-propagate type="APIKIT:METHOD_NOT_ALLOWED">
             <ee:transform
-                xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
                 xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                 <ee:message>
                     <ee:set-payload><![CDATA[%dw 2.0
@@ -140,7 +131,6 @@ output application/json
         </on-error-propagate>
         <on-error-propagate type="APIKIT:NOT_ACCEPTABLE">
             <ee:transform
-                xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
                 xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                 <ee:message>
                     <ee:set-payload><![CDATA[%dw 2.0
@@ -157,7 +147,6 @@ output application/json
         <on-error-propagate
             type="APIKIT:UNSUPPORTED_MEDIA_TYPE">
             <ee:transform
-                xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
                 xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                 <ee:message>
                     <ee:set-payload><![CDATA[%dw 2.0
@@ -173,7 +162,6 @@ output application/json
         </on-error-propagate>
         <on-error-propagate type="APIKIT:NOT_IMPLEMENTED">
             <ee:transform
-                xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
                 xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                 <ee:message>
                     <ee:set-payload><![CDATA[%dw 2.0
@@ -191,9 +179,7 @@ output application/json
     <error-handler name="console-error-handler">
         <on-error-propagate type="APIKIT:NOT_FOUND">
             <ee:transform
-                xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-                xsi:schemaLocation="
-http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+                xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
                 <ee:message>
                     <ee:set-payload><![CDATA[%dw 2.0
 output application/json
