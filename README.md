@@ -1,5 +1,5 @@
 
-# OData Example
+# OData Syabse Example
 
 - [Use Case](#use-case)
 - [Supported Runtimes](#supported-runtimes)
