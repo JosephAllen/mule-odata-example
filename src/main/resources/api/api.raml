@@ -54,9 +54,9 @@ resourceTypes:
             application/json:
               type: <<model>>
 
-/ODemos:
-  displayName: ODemos
-  type: { collection: { model: model.ODemo } }
+/Contacts:
+  displayName: Contacts
+  type: { collection: { model: model.Contact } }
   /{Id}:
-    displayName: ODemo
-    type: { member: { model: model.ODemo } }
+    displayName: Contact
+    type: { member: { model: model.Contact } }
